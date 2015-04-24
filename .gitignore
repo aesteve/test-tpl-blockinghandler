@@ -1,0 +1,10 @@
+bin
+build
+target
+.gradle
+.settings
+.classpath
+.project
+.vertx
+logs
+site/bundles/.*

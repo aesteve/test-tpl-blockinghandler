@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'com.github.johnrengelman.shadow' version '1.2.1'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'http://oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    compile 'io.vertx:vertx-core:3.0.0-SNAPSHOT'
+    compile 'io.vertx:vertx-apex:3.0.0-SNAPSHOT'
+    
+    compile 'com.github.jknack:handlebars:2.0.0'
+}
+
+if (!JavaVersion.current().java8Compatible) {
+    throw new IllegalStateException("This needs Java 8. You are using ${JavaVersion.current()}.")
+}
+
+shadowJar  {
+    classifier = 'vertx'
+    manifest {
+        attributes 'Main-Class': 'io.vertx.core.Starter'
+        attributes 'Main-Verticle': 'java:WebServer'
+    }
+    mergeServiceFiles {
+        include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    }
+    dependencies {
+        exclude(dependency('io.vertx:codegen'))
+        exclude(dependency('junit:junit'))
+        exclude(dependency('org.mvel:mvel2'))
+    }
+}
+
+task start(dependsOn: shadowJar) << {
+    javaexec { main="-jar"; args shadowJar.archivePath }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
