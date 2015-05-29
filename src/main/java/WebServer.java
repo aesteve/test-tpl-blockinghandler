@@ -1,9 +1,9 @@
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
-import io.vertx.ext.apex.Router;
-import io.vertx.ext.apex.handler.TemplateHandler;
-import io.vertx.ext.apex.templ.HandlebarsTemplateEngine;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.TemplateHandler;
+import io.vertx.ext.web.templ.HandlebarsTemplateEngine;
 
 public class WebServer extends AbstractVerticle {
     @Override

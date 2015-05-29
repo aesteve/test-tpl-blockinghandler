@@ -5,14 +5,15 @@ plugins {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
     maven { url 'http://oss.sonatype.org/content/repositories/snapshots/' }
 }
 
 dependencies {
     compile 'io.vertx:vertx-core:3.0.0-SNAPSHOT'
-    compile 'io.vertx:vertx-apex:3.0.0-SNAPSHOT'
+    compile ('io.vertx:vertx-web:3.0.0-SNAPSHOT') {
+        changing = true
+    }
     
     compile 'com.github.jknack:handlebars:2.0.0'
 }
@@ -22,7 +23,7 @@ if (!JavaVersion.current().java8Compatible) {
 }
 
 shadowJar  {
-    classifier = 'vertx'
+    classifier = 'fatjar'
     manifest {
         attributes 'Main-Class': 'io.vertx.core.Starter'
         attributes 'Main-Verticle': 'java:WebServer'
@@ -42,5 +43,5 @@ task start(dependsOn: shadowJar) << {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '2.3'
+    gradleVersion = '2.4'
 }
